@@ -7,9 +7,10 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { Chart, ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { NeuronalNetworkService } from '../../services/neuronal-network.service';
-
+import zoomPlugin from 'chartjs-plugin-zoom';
+Chart.register(zoomPlugin);
 @Component({
   selector: 'app-scatter-initial-dataset',
   standalone: false,
@@ -159,6 +160,20 @@ export class ScatterInitialDatasetComponent implements OnInit, OnChanges {
       scales: {
         x: { title: { display: true, text: xFeature } },
         y: { title: { display: true, text: yFeature } },
+      },
+
+      plugins: {
+        zoom: {
+          zoom: {
+            wheel: { enabled: true },
+            pinch: { enabled: true },
+            mode: 'x',
+          },
+          pan: {
+            enabled: true,
+            mode: 'x',
+          },
+        },
       },
     };
   }

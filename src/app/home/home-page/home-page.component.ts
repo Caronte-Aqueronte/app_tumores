@@ -54,8 +54,11 @@ export class HomePageComponent implements OnInit {
   };
 
   public trainForm: FormGroup;
+  public predictForm: FormGroup;
   public desicionBoundaryPoints: any;
-  public errorPerEpoach: any;
+  public predictionResult!: string | null;
+  public finalAccuracy!: number;
+  public errorPerEpoch!: Record<number, number>;
 
   constructor(
     private fb: FormBuilder,
@@ -63,7 +66,7 @@ export class HomePageComponent implements OnInit {
     private toastr: ToastrService
   ) {
     this.trainForm = this.fb.group({
-      max_epoachs: [20000, [Validators.required, Validators.min(1)]],
+      max_epochs: [200, [Validators.required, Validators.min(1)]],
       learning_rate: [
         1,
         [Validators.required, Validators.min(1), Validators.max(100)],
@@ -72,6 +75,11 @@ export class HomePageComponent implements OnInit {
         80,
         [Validators.required, Validators.min(1), Validators.max(100)],
       ],
+    });
+
+    this.predictForm = this.fb.group({
+      first_feature: [null, [Validators.required]],
+      second_feature: [null, [Validators.required]],
     });
   }
 
@@ -94,7 +102,7 @@ export class HomePageComponent implements OnInit {
     const formValue = this.trainForm.value;
 
     const requestBody = {
-      max_epoachs: formValue.max_epoachs,
+      max_epochs: formValue.max_epochs,
       learning_rate: formValue.learning_rate,
       first_feature: this.selectedColX.id,
       second_feature: this.selectedColY.id,
@@ -104,8 +112,10 @@ export class HomePageComponent implements OnInit {
     this.neuronalNetworkServise.train(requestBody).subscribe(
       (response) => {
         this.toastr.success('Entrenamiento completado exitosamente.', 'Éxito');
-        console.log(response);
         this.desicionBoundaryPoints = response.desicion_boundary_points;
+        this.errorPerEpoch = response.error_per_epoch;
+        this.finalAccuracy = response.final_accuracy;
+        this.predictionResult = null;
       },
       (error) => {
         this.toastr.error(
@@ -114,5 +124,31 @@ export class HomePageComponent implements OnInit {
         );
       }
     );
+  }
+
+  public predict(): void {
+    if (this.predictForm.invalid) {
+      this.toastr.error(
+        'Por favor, completa correctamente todos los campos.',
+        'Formulario inválido'
+      );
+      return;
+    }
+
+    const formValue = this.predictForm.value;
+
+    const requestBody = {
+      first_feature: formValue.first_feature,
+      second_feature: formValue.second_feature,
+    };
+
+    this.neuronalNetworkServise.predict(requestBody).subscribe({
+      next: (response: any) => {
+        this.predictionResult = response.prediction;
+      },
+      error: (error) => {
+        this.toastr.error(error?.error?.detail, 'Error');
+      },
+    });
   }
 }

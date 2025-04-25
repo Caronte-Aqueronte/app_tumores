@@ -14,12 +14,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
+
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 
 import { BaseChartDirective } from 'ng2-charts';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { ScatterInitialDatasetComponent } from './components/scatter-initial-dataset/scatter-initial-dataset.component';
-import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -45,19 +49,24 @@ registerLocaleData(en);
     BrowserModule,
     AppRoutingModule,
     BaseChartDirective,
+
     NzSelectModule,
     NzButtonModule,
     NzInputModule,
+    NzTabsModule,
+    NzFormModule,
+    NzAlertModule,
+
     FontAwesomeModule,
 
     ToastrModule.forRoot({
       timeOut: 2000,
-      positionClass: 'toast-top-right',
-      preventDuplicates: false,
+      positionClass: 'toast-top-center',
+      preventDuplicates: true,
     }),
 
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     provideNzI18n(en_US),

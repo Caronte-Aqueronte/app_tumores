@@ -1,93 +1,197 @@
 <div class="h-screen bg-gray-100 p-4 flex space-x-4">
   <div class="w-1/2 bg-white p-4 shadow-lg rounded-xl flex flex-col gap-3">
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex space-x-3">
-        <fa-icon [icon]="'robot'" class="text-gray-600 text-2xl"></fa-icon>
-        <h2 class="text-2xl font-bold text-gray-800">
-          Entrenamiento del Modelo
-        </h2>
-      </div>
-    </div>
-
-    <p class="text-gray-600 mb-6">
-      Usa las características seleccionadas para entrenar el modelo.
-    </p>
-
-    <div class="flex flex-col gap-5">
-      <div class="flex space-x-4">
-        <div class="flex flex-col w-1/2">
-          <label class="text-gray-600 font-medium mb-1"
-            >Selecciona Feature X</label
-          >
-          <nz-select
-            class="w-full"
-            [(ngModel)]="selectedColX"
-            nzShowSearch
-            nzPlaceHolder="Elige una opción"
-          >
-            <nz-option
-              *ngFor="let feature of featureNames"
-              [nzValue]="feature"
-              [nzLabel]="feature.name"
-            ></nz-option>
-          </nz-select>
+    <nz-tabset>
+      <nz-tab nzTitle="Entrenamiento del Modelo">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex space-x-3">
+            <fa-icon [icon]="'robot'" class="text-gray-600 text-2xl"></fa-icon>
+            <h2 class="text-2xl font-bold text-gray-800">
+              Entrenamiento del Modelo
+            </h2>
+          </div>
         </div>
 
-        <div class="flex flex-col w-1/2">
-          <label class="text-gray-600 font-medium mb-1"
-            >Selecciona Feature Y</label
-          >
-          <nz-select
-            class="w-full"
-            [(ngModel)]="selectedColY"
-            nzShowSearch
-            nzPlaceHolder="Elige una opción"
-          >
-            <nz-option
-              *ngFor="let feature of featureNames"
-              [nzValue]="feature"
-              [nzLabel]="feature.name"
-            ></nz-option>
-          </nz-select>
+        <p class="text-gray-600 mb-6">
+          Usa las características seleccionadas para entrenar el modelo.
+        </p>
+
+        <div class="flex flex-col gap-6 mb-3">
+          <div class="flex space-x-4">
+            <div class="flex flex-col w-1/2">
+              <label class="text-gray-600 text-sm mb-1"
+                >Selecciona Feature X</label
+              >
+              <nz-select
+                class="w-full"
+                [(ngModel)]="selectedColX"
+                nzShowSearch
+                nzPlaceHolder="Elige una opción"
+              >
+                <nz-option
+                  *ngFor="let feature of featureNames"
+                  [nzValue]="feature"
+                  [nzLabel]="feature.name"
+                ></nz-option>
+              </nz-select>
+            </div>
+
+            <div class="flex flex-col w-1/2">
+              <label class="text-gray-600 text-sm mb-1"
+                >Selecciona Feature Y</label
+              >
+              <nz-select
+                class="w-full"
+                [(ngModel)]="selectedColY"
+                nzShowSearch
+                nzPlaceHolder="Elige una opción"
+              >
+                <nz-option
+                  *ngFor="let feature of featureNames"
+                  [nzValue]="feature"
+                  [nzLabel]="feature.name"
+                ></nz-option>
+              </nz-select>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <form
-      [formGroup]="trainForm"
-      (ngSubmit)="train()"
-      class="flex flex-col gap-3"
-    >
-      <div class="flex flex-col">
-        <label class="text-gray-700 text-sm mb-1">Máximo de Épocas</label>
-        <input nz-input placeholder="Ej: 20000" formControlName="max_epoachs" />
-      </div>
-
-      <div class="flex flex-col">
-        <label class="text-gray-700 text-sm mb-1"
-          >Tasa de Aprendizaje (%)</label
+        <form
+          [formGroup]="trainForm"
+          (ngSubmit)="train()"
+          class="flex flex-col gap-3"
         >
-        <input nz-input placeholder="Ej: 1" formControlName="learning_rate" />
-      </div>
+          <div class="flex flex-col">
+            <label class="text-gray-700 text-sm mb-1">Máximo de Épocas</label>
+            <input
+              nz-input
+              placeholder="Ej: 20000"
+              formControlName="max_epochs"
+            />
+          </div>
 
-      <div class="flex flex-col">
-        <label class="text-gray-700 text-sm mb-1"
-          >Porcentaje de Datos a Usar (%)</label
+          <div class="flex flex-col">
+            <label class="text-gray-700 text-sm mb-1"
+              >Tasa de Aprendizaje (%)</label
+            >
+            <input
+              nz-input
+              placeholder="Ej: 1"
+              formControlName="learning_rate"
+            />
+          </div>
+
+          <div class="flex flex-col">
+            <label class="text-gray-700 text-sm mb-1"
+              >Porcentaje de Datos a Usar (%)</label
+            >
+            <input
+              nz-input
+              placeholder="Ej: 80"
+              formControlName="percentage_to_use"
+            />
+          </div>
+
+          <button
+            nz-button
+            nzType="primary"
+            class="flex space-x-2"
+            type="submit"
+          >
+            <fa-icon [icon]="'play'" class="text-white"></fa-icon>
+            Entrenar Modelo
+          </button>
+        </form>
+      </nz-tab>
+
+      <nz-tab nzTitle="Predecir">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex space-x-3">
+            <fa-icon
+              [icon]="'calculator'"
+              class="text-blue-600 text-2xl"
+            ></fa-icon>
+            <h2 class="text-2xl font-bold text-blue-600">Haz Una Predicción</h2>
+          </div>
+        </div>
+
+        <form
+          nz-form
+          [nzLayout]="'horizontal'"
+          [formGroup]="predictForm"
+          (ngSubmit)="predict()"
         >
-        <input
-          nz-input
-          placeholder="Ej: 80"
-          formControlName="percentage_to_use"
-        />
-      </div>
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="first_feature">{{
+              selectedColX.name
+            }}</nz-form-label>
+            <nz-form-control>
+              <nz-input-group>
+                <input
+                  type="number"
+                  formControlName="first_feature"
+                  nz-input
+                  id="first_feature"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
 
-      <button nz-button nzType="primary" class="flex space-x-2" type="submit">
-        <fa-icon [icon]="'play'" class="text-white"></fa-icon>
-        Entrenar Modelo
-      </button>
-    </form>
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="second_feature">{{
+              selectedColY.name
+            }}</nz-form-label>
+            <nz-form-control>
+              <nz-input-group>
+                <input
+                  type="number"
+                  formControlName="second_feature"
+                  nz-input
+                  id="second_feature"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-control>
+              <button
+                nz-button
+                nzType="primary"
+                class="flex space-x-2"
+                [disabled]="!predictForm.valid"
+              >
+                <fa-icon [icon]="'play'" class="text-white"></fa-icon>
+                Predecir
+              </button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+
+        <nz-alert
+          *ngIf="predictionResult"
+          [nzType]="predictionResult === 'Maligno' ? 'error' : 'warning'"
+          [nzMessage]="'Resultado: ' + predictionResult"
+          nzShowIcon
+          class="mt-4"
+        ></nz-alert>
+      </nz-tab>
+    </nz-tabset>
   </div>
-  <div class="w-1/2 bg-white p-4 shadow-lg rounded-xl flex flex-col">
+
+  <div
+    class="w-1/2 bg-white p-6 shadow-xl rounded-2xl flex flex-col gap-8 overflow-y-auto max-h-[90vh]"
+  >
+    <div class="flex justify-between">
+      <div class="flex space-x-3">
+        <fa-icon [icon]="'database'" class="text-blue-600 text-2xl"></fa-icon>
+
+        <h2 class="text-2xl">Visualización de Datos</h2>
+      </div>
+      <div *ngIf="finalAccuracy" class="text-gray-600 text-sm font-semibold">
+        Final Accuracy: {{ finalAccuracy }}%
+      </div>
+    </div>
+
     <app-scatter-initial-dataset
       [featureNames]="featureNames"
       [selectedColX]="selectedColX"
@@ -95,5 +199,12 @@
       [desicionBoundaryPoints]="desicionBoundaryPoints"
       (event)="selectCols($event)"
     ></app-scatter-initial-dataset>
+
+    <div class="flex items-center space-x-3">
+      <fa-icon [icon]="'chart-line'" class="text-blue-600 text-2xl"></fa-icon>
+      <h2 class="text-2xl font-bold text-gray-800">Errores por Época</h2>
+    </div>
+
+    <app-points-chart [errorPerEpoch]="errorPerEpoch"></app-points-chart>
   </div>
 </div>

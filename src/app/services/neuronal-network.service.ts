@@ -17,4 +17,8 @@ export class NeuronalNetworkService {
   public train(body: any): Observable<any> {
     return this.http.post(`${this.apiUrl}train`, body);
   }
+
+  public predict(body: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}predict`, body);
+  }
 }
