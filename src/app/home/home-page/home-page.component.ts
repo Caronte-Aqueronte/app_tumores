@@ -78,8 +78,8 @@ export class HomePageComponent implements OnInit {
     });
 
     this.predictForm = this.fb.group({
-      first_feature: [null, [Validators.required]],
-      second_feature: [null, [Validators.required]],
+      first_feature: [null, [Validators.required, Validators.min(0)]],
+      second_feature: [null, [Validators.required, Validators.min(0)]],
     });
   }
 

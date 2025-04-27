@@ -92,6 +92,7 @@
           </div>
 
           <button
+            [disabled]="!trainForm.valid"
             nz-button
             nzType="primary"
             class="flex space-x-2"
